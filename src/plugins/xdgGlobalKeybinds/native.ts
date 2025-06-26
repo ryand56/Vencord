@@ -17,9 +17,10 @@ function getMainWindow(): BrowserWindow | null {
     );
 }
 
-(async function () {
-    const bus = sessionBus();
+const bus = sessionBus();
+let session_handle: string | undefined;
 
+(async function () {
     const obj = await bus.getProxyObject(
         "org.freedesktop.portal.Desktop",
         "/org/freedesktop/portal/desktop",
@@ -68,3 +69,13 @@ function getMainWindow(): BrowserWindow | null {
         },
     );
 })();
+
+export async function closeSession() {
+    if (!session_handle) return;
+    const obj = await bus.getProxyObject(
+        "org.freedesktop.portal.Desktop",
+        session_handle,
+    );
+    const Session = obj.getInterface("org.freedesktop.portal.Session");
+    await Session.Close();
+}

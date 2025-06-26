@@ -40,6 +40,7 @@ export default definePlugin({
         VencordNative.ipcRenderer.removeAllListeners(
             IpcEvents.XDG_GLOBAL_KEYBIND_ACTIVATED,
         );
+        VencordNative.pluginHelpers.xdgGlobalKeybinds.closeSession();
     },
 });
 
